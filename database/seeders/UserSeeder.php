@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
                 'phone_no' => '05321234566',
                 'date_of_birth' => '1999-09-28',
                 'password' => bcrypt('asdf1234'),
+                'created_at' => now(),
             ],
             [
                 'user_type_id' => UserTypeConstants::DOCTOR,
@@ -39,6 +40,7 @@ class UserSeeder extends Seeder
                 'phone_no' => '05321230567',
                 'date_of_birth' => '1981-09-28',
                 'password' => bcrypt('asdf1234'),
+                'created_at' => now(),
             ],
             [
                 'user_type_id' => UserTypeConstants::DOCTOR,
@@ -51,6 +53,7 @@ class UserSeeder extends Seeder
                 'phone_no' => '05321238567',
                 'date_of_birth' => '1977-11-28',
                 'password' => bcrypt('asdf1234'),
+                'created_at' => now(),
             ],
             [
                 'user_type_id' => UserTypeConstants::NURSE,
@@ -63,6 +66,7 @@ class UserSeeder extends Seeder
                 'phone_no' => '05321134567',
                 'date_of_birth' => '1989-01-28',
                 'password' => bcrypt('asdf1234'),
+                'created_at' => now(),
             ]
         ];
 

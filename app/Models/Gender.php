@@ -18,4 +18,11 @@ class Gender extends Model
     protected $fillable = [
         'definition',
     ];
+
+    protected $appends = ['definition'];
+
+    public function getDefinitionAttribute()
+    {
+        return $this->attributes['definition'];
+    }
 }

@@ -18,7 +18,9 @@ class UserController extends Controller
     public function getUsers(): JsonResponse
     {
         try {
-            $users = User::orderBy('name')->get();
+            $users = User::orderBy('firstname')
+                ->with(['gender','role','userType'])
+                ->get();
             return ResponseService::success($users, 'Success');
         } catch (Exception $e) {
             Log::info('Users are not fetched.Error: ' . $e->getMessage());
@@ -29,7 +31,7 @@ class UserController extends Controller
     public function getUser($id): JsonResponse
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($id)->load(['gender','role','userType']);
             return ResponseService::success($user, 'Success');
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
@@ -47,6 +49,8 @@ class UserController extends Controller
             $fields = $request->validated();
             DB::beginTransaction();
             $fields['created_by'] = auth()->user()->id;
+            //Generate username from firstname and lastname automatically as default
+            $fields['username'] = strtolower($fields['firstname'][0]).$fields['lastname'];
             $newUser = User::create($fields);
             DB::commit();
             Log::info('User with the ID ' . $newUser->id . ' is created by ' . auth()->user()->id);

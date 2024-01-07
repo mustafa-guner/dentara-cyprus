@@ -14,7 +14,14 @@ use Illuminate\Database\Eloquent\Model;
 class UserType extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'definition',
     ];
+    protected $appends = ['definition'];
+
+    public function getDefinitionAttribute()
+    {
+        return $this->attributes['definition'];
+    }
 }

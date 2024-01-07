@@ -24,7 +24,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => 'Dentara is a dental clinic management system that helps dentists manage their patients, appointments, treatments, and more.',
     ],
 
     /*
