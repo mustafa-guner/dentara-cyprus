@@ -62,7 +62,7 @@ return [
      * ```
      */
     'servers' => [
-        'Local' => env('APP_URL').'/api',
+        'Local' => env('APP_DEV_URL').'/api',
         'Prod' => env('APP_PROD_URL').'/api',
     ],
 
