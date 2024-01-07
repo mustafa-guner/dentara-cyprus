@@ -52,6 +52,7 @@ class UserController extends Controller
             //Generate username from firstname and lastname automatically as default
             $fields['username'] = strtolower($fields['firstname'][0]).$fields['lastname'];
             $newUser = User::create($fields);
+            $newUser->load(['gender','role','userType']);
             DB::commit();
             Log::info('User with the ID ' . $newUser->id . ' is created by ' . auth()->user()->id);
             return ResponseService::success($newUser, 'User is created successfully.',Response::HTTP_CREATED);
@@ -75,6 +76,7 @@ class UserController extends Controller
             DB::beginTransaction();
             $fields['updated_by'] = auth()->user()->id;
             $user->update($fields);
+            $user->load(['gender','role','userType']);
             DB::commit();
             Log::info('User with the ID ' . $user->id . ' is updated by ' . auth()->user()->id);
             return ResponseService::success($user, 'User is updated successfully.');

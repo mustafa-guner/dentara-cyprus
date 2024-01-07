@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Appointment\Appointment;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -46,6 +48,11 @@ class Patient extends Model
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
     }
 
     public function createdBy(): BelongsTo

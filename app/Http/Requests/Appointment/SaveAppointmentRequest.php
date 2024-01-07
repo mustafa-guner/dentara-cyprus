@@ -35,15 +35,17 @@ class SaveAppointmentRequest extends FormRequest
      */
     public function rules(): array
     {
+        $appointment_id = $this->route('id');
+
         return [
             'appointment_date' => 'required|date',
             'patient_id' => 'required|exists:patients,id',
             'assigned_user_id' => 'required|exists:users,id',
             'appointment_status_id' => 'required|exists:appointment_statuses,id',
-            'payment_method_id' => 'required|exists:payment_methods,id',
+            'payment_method_id' => $appointment_id ? 'required|exists:payment_methods,id' : 'nullable',
             'payment_status_id' => 'required|exists:payment_statuses,id',
             'appointment_type_id' => 'required|exists:appointment_types,id',
-            'discount_id' => 'required|exists:discounts,id',
+            'discount_id' => $appointment_id ? 'required|exists:discounts,id' : 'nullable',
             'comment' => 'nullable|string',
             'price' => 'required|numeric',
             'real_price' => 'required|numeric',

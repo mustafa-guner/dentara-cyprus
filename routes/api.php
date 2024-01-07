@@ -3,13 +3,16 @@
 use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Appointment\AppointmentTypeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\Treatment\TreatmentController;
 use App\Http\Controllers\Treatment\TreatmentTypeController;
 use App\Http\Controllers\UserController;
+use App\Services\ResponseService;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,7 +85,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', 'getPatients');
             Route::get('/{id}', 'getPatient');
             Route::post('/create', 'createPatient');
-            Route::put('/{id}', 'updatePatient');
+            Route::put('update/{id}', 'updatePatient');
             Route::delete('delete/{id}', 'deletePatient');
         });
     });
@@ -99,7 +102,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', 'getAppointments');
             Route::get('/{id}', 'getAppointment');
             Route::post('/create', 'createAppointment');
-            Route::put('/{id}', 'updateAppointment');
+            Route::put('update/{id}', 'updateAppointment');
             Route::delete('delete/{id}', 'deleteAppointment');
         });
 
@@ -111,7 +114,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 Route::get('/', 'getAppointmentTypes');
                 Route::get('/{id}', 'getAppointmentType');
                 Route::post('/create', 'createAppointmentType');
-                Route::put('/{id}', 'updateAppointmentType');
+                Route::put('/update/{id}', 'updateAppointmentType');
                 Route::delete('delete/{id}', 'deleteAppointmentType');
             });
         });
@@ -129,7 +132,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', 'getTreatments');
             Route::get('/{id}', 'getTreatment');
             Route::post('/create', 'createTreatment');
-            Route::put('/{id}', 'updateTreatment');
+            Route::put('/update/{id}', 'updateTreatment');
             Route::delete('delete/{id}', 'deleteTreatment');
         });
 
@@ -141,9 +144,26 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 Route::get('/', 'getTreatmentTypes');
                 Route::get('/{id}', 'getTreatmentType');
                 Route::post('/create', 'createTreatmentType');
-                Route::put('/{id}', 'updateTreatmentType');
+                Route::put('/update/{id}', 'updateTreatmentType');
                 Route::delete('delete/{id}', 'deleteTreatmentType');
             });
+        });
+    });
+
+
+    //---------------------------------------------------------------------------------------------
+
+    /**
+     * @URL: {{URL}}/api/v1/discounts/*
+     * @DESCRIPTION: Equipment related routes for managing discounts
+     */
+    Route::group(['prefix' => '/discounts'], function () {
+        Route::controller(DiscountController::class)->group(function () {
+            Route::get('/', 'getDiscounts');
+            Route::get('/{id}', 'getDiscount');
+            Route::post('/create', 'createDiscount');
+            Route::put('/update/{id}', 'updateDiscount');
+            Route::delete('delete/{id}', 'deleteDiscount');
         });
     });
 
@@ -159,9 +179,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', 'getEquipments');
             Route::get('/{id}', 'getEquipment');
             Route::post('/create', 'createEquipment');
-            Route::put('/{id}', 'updateEquipment');
+            Route::put('/update/{id}', 'updateEquipment');
             Route::delete('delete/{id}', 'deleteEquipment');
         });
     });
 
 });
+
+
+Route::fallback(function () {
+    return ResponseService::fail('404 - Service Not Found :(', Response::HTTP_NOT_FOUND);
+});
+
+Route::any('/{any}', function () {
+    return ResponseService::fail('404 - Service Not Found :(', Response::HTTP_NOT_FOUND);
+})->where('any', '.*');

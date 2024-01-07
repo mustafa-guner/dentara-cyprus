@@ -19,7 +19,9 @@ class AppointmentController extends Controller
     public function getAppointments(): JsonResponse
     {
         try {
-            $appointments = Appointment::orderBy('appointment_date','desc')->get();
+            $appointments = Appointment::orderBy('appointment_date', 'desc')
+                ->with(['assignedUser','patient','appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy'])
+                ->get();
             return ResponseService::success($appointments, 'Success');
         } catch (Exception $e) {
             Log::info('Appointments are not fetched.Error: ' . $e->getMessage());
@@ -30,7 +32,8 @@ class AppointmentController extends Controller
     public function getAppointment($id): JsonResponse
     {
         try {
-            $appointment = Appointment::findOrFail($id);
+            $appointment = Appointment::findOrFail($id)
+                ->load(['assignedUser','patient','appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             return ResponseService::success($appointment, 'Success');
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
@@ -49,6 +52,7 @@ class AppointmentController extends Controller
             DB::beginTransaction();
             $fields['created_by'] = auth()->user()->id;
             $appointment = Appointment::create($fields);
+            $appointment->load(['assignedUser','patient','appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             DB::commit();
             Log::info('Appointment with the ID ' . $appointment->id . ' is created by ' . auth()->user()->id);
             return ResponseService::success($appointment, 'Appointment is created successfully.', Response::HTTP_CREATED);
@@ -72,6 +76,7 @@ class AppointmentController extends Controller
             DB::beginTransaction();
             $fields['updated_by'] = auth()->user()->id;
             $appointment->update($fields);
+            $appointment->load(['user','patient','appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             DB::commit();
             Log::info('Appointment with the ID ' . $appointment->id . ' is updated by ' . auth()->user()->id);
             return ResponseService::success($appointment, 'Appointment is updated successfully.');

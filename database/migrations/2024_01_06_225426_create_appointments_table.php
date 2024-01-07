@@ -18,10 +18,10 @@ return new class extends Migration {
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('assigned_user_id');
             $table->unsignedBigInteger('appointment_status_id')->default(AppointmentStatusConstants::IN_PROGRESS);
-            $table->unsignedBigInteger('payment_method_id');
+            $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->unsignedBigInteger('payment_status_id')->default(PaymentStatusConstants::PENDING);
             $table->unsignedBigInteger('appointment_type_id');
-            $table->unsignedBigInteger('discount_id');
+            $table->unsignedBigInteger('discount_id')->nullable();
             $table->text('comment')->nullable();
             $table->float('price');
             $table->float('real_price');

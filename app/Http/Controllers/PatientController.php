@@ -18,7 +18,9 @@ class PatientController extends Controller
     public function getPatients(): JsonResponse
     {
         try {
-            $patients = Patient::orderBy('name')->get();
+            $patients = Patient::orderBy('firstname')
+                ->with('gender')
+                ->get();
             return ResponseService::success($patients, 'Success');
         } catch (Exception $e) {
             Log::info('Patients are not fetched.Error: ' . $e->getMessage());
@@ -29,7 +31,7 @@ class PatientController extends Controller
     public function getPatient($id): JsonResponse
     {
         try {
-            $patient = Patient::findOrFail($id);
+            $patient = Patient::findOrFail($id)->with('gender');
             return ResponseService::success($patient, 'Success');
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
@@ -48,6 +50,7 @@ class PatientController extends Controller
             DB::beginTransaction();
             $fields['created_by'] = auth()->user()->id;
             $patient = Patient::create($fields);
+            $patient->load('gender');
             DB::commit();
             Log::info('Patient with the ID ' . $patient->id . ' is created by ' . auth()->user()->id);
             return ResponseService::success($patient, 'Patient is created successfully.', Response::HTTP_CREATED);
@@ -71,6 +74,7 @@ class PatientController extends Controller
             DB::beginTransaction();
             $fields['updated_by'] = auth()->user()->id;
             $patient->update($fields);
+            $patient->load('gender');
             DB::commit();
             Log::info('Patient with the ID ' . $patient->id . ' is updated by ' . auth()->user()->id);
             return ResponseService::success($patient, 'Patient is updated successfully.');

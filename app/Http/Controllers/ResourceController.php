@@ -61,7 +61,7 @@ class ResourceController extends Controller
     }
 
 
-    public function getPaymentStatuses(): JsonResponse
+        public function getPaymentStatuses(): JsonResponse
     {
         try {
             $paymentStatuses = PaymentStatus::orderBy('definition')->get();
