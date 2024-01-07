@@ -27,7 +27,7 @@ class SaveDiscountRequest extends FormRequest
     {
         return [
             'definition' => 'required|string|max:100',
-            'percentage' => 'required|numeric|between:0,100',
+            'percentage' => 'required|numeric',
         ];
     }
 
@@ -41,10 +41,9 @@ class SaveDiscountRequest extends FormRequest
         return [
             'definition.required' => 'The definition field is required.',
             'definition.string' => 'The definition must be a string.',
-            'definition.max' => 'The definition may not be greater than :max characters.',
+            'definition.max' => 'The definition may not be greater than 100 characters.',
             'percentage.required' => 'The percentage field is required.',
             'percentage.numeric' => 'The percentage must be a number.',
-            'percentage.between' => 'The percentage must be between :min and :max.',
         ];
     }
 }
