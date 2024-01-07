@@ -37,7 +37,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          port: 65002
+          port: ${{ secrets.SSH_PORT }}
           script: |
             cd domains/cypsoft.tech/public_html/dentara
             git restore .
