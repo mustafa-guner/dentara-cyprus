@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 65002
           script: |
-            cd domains/cypsoft.tech/dentara
+            cd domains/cypsoft.tech/public_html/dentara
             git restore .
             git pull origin main
             php artisan migrate --force
