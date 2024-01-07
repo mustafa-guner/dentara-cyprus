@@ -1,0 +1,52 @@
+name: Production CI/CD for Dentara
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Clear Composer Cache
+        run: php composer.phar clear-cache
+
+      - name: Install PHP dependencies
+        run: php composer.phar install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Copy .env file
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Generate application key
+        run: php artisan optimize:clear
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Deploy to Hostinger
+        uses: appleboy/ssh-action@master
+        with:
+          host: 154.49.245.169
+          username: u117511159
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 65002
+          script: |
+            cd domains/cypsoft.tech/
+            git restore .
+            git pull origin main
+            php artisan migrate --force
+
