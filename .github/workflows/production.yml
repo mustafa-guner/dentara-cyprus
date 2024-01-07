@@ -37,8 +37,8 @@ jobs:
       - name: Deploy to Hostinger
         uses: appleboy/ssh-action@master
         with:
-          host: 154.49.245.169
-          username: u117511159
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: 65002
           script: |
