@@ -16,8 +16,6 @@ jobs:
         with:
           php-version: '8.1'
 
-      - name: Clear Composer Cache
-        run: php composer.phar clear-cache
 
       - name: Install PHP dependencies
         run: php composer.phar install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
