@@ -62,8 +62,8 @@ return [
      * ```
      */
     'servers' => [
-        'Local' => env('APP_URL'),
-        'Prod' => env('APP_PROD_URL'),
+        'Local' => env('APP_URL').'/api',
+        'Prod' => env('APP_PROD_URL').'/api',
     ],
 
     'middleware' => [
