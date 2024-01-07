@@ -61,11 +61,13 @@ return [
      * ],
      * ```
      */
-    'servers' => null,
+    'servers' => [
+        'Local' => env('APP_URL'),
+        'Prod' => env('APP_PROD_URL'),
+    ],
 
     'middleware' => [
         'web',
-        RestrictedDocsAccess::class,
     ],
 
     'extensions' => [],
