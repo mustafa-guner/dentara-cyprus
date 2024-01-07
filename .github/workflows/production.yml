@@ -16,9 +16,8 @@ jobs:
         with:
           php-version: '8.1'
 
-
       - name: Install PHP dependencies
-        run: php composer.phar install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: php composer.phar install
 
       - name: Copy .env file
         run: cp .env.example .env
