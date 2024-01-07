@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             AppointmentTypeSeeder::class,
             AppointmentStatusSeeder::class,
             EquipmentSeeder::class,
-            TreatmentTypeSeeder::class
+            TreatmentTypeSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

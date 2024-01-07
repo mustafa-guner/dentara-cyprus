@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Appointment\AppointmentController;
+use App\Http\Controllers\Appointment\AppointmentTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\TreatmentController;
+use App\Http\Controllers\Treatment\TreatmentController;
+use App\Http\Controllers\Treatment\TreatmentTypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +102,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::put('/{id}', 'updateAppointment');
             Route::delete('delete/{id}', 'deleteAppointment');
         });
+
+        /**
+         * @URL: {{URL}}/api/v1/appointments/types/*
+         */
+        Route::group(['prefix' => '/types'], function () {
+            Route::controller(AppointmentTypeController::class)->group(function () {
+                Route::get('/', 'getAppointmentTypes');
+                Route::get('/{id}', 'getAppointmentType');
+                Route::post('/create', 'createAppointmentType');
+                Route::put('/{id}', 'updateAppointmentType');
+                Route::delete('delete/{id}', 'deleteAppointmentType');
+            });
+        });
     });
 
 
@@ -116,6 +131,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('/create', 'createTreatment');
             Route::put('/{id}', 'updateTreatment');
             Route::delete('delete/{id}', 'deleteTreatment');
+        });
+
+        /**
+         * @URL: {{URL}}/api/v1/treatments/types/*
+         */
+        Route::group(['prefix' => '/types'], function () {
+            Route::controller(TreatmentTypeController::class)->group(function () {
+                Route::get('/', 'getTreatmentTypes');
+                Route::get('/{id}', 'getTreatmentType');
+                Route::post('/create', 'createTreatmentType');
+                Route::put('/{id}', 'updateTreatmentType');
+                Route::delete('delete/{id}', 'deleteTreatmentType');
+            });
         });
     });
 
