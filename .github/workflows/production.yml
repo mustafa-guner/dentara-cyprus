@@ -34,9 +34,6 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Install Node.js dependencies
-        run: npm install
-
       - name: Deploy to Hostinger
         uses: appleboy/ssh-action@master
         with:
