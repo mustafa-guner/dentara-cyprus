@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Redirect / to /api/documentations (for swagger endpoints)
+    RewriteRule ^$ /api/documentation [R,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
