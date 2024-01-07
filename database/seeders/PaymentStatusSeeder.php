@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Constants\Payment\PaymentStatusConstants;
 use App\Models\Payment\PaymentStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PaymentStatusSeeder extends Seeder
@@ -16,15 +17,18 @@ class PaymentStatusSeeder extends Seeder
         $paymentStatuses = [
             [
                 'id' => PaymentStatusConstants::PENDING,
-                'definition' => 'Pending'
+                'definition' => 'Pending',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => PaymentStatusConstants::PAID,
-                'definition' => 'Paid'
+                'definition' => 'Paid',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => PaymentStatusConstants::REFUNDED,
-                'definition' => 'Refunded'
+                'definition' => 'Refunded',
+                'created_at' => Carbon::now()
             ],
         ];
 

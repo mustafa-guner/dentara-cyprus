@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Constants\Payment\PaymentMethodConstants;
 use App\Models\Payment\PaymentMethod;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PaymentMethodSeeder extends Seeder
@@ -16,19 +17,23 @@ class PaymentMethodSeeder extends Seeder
         $paymentMethods = [
             [
                 'id' => PaymentMethodConstants::CASH,
-                'definition' => 'Cash'
+                'definition' => 'Cash',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => PaymentMethodConstants::CREDIT_CARD,
-                'definition' => 'Credit Card'
+                'definition' => 'Credit Card',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => PaymentMethodConstants::DEBIT_CARD,
-                'definition' => 'Debit Card'
+                'definition' => 'Debit Card',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => PaymentMethodConstants::CHECK,
-                'definition' => 'Check'
+                'definition' => 'Check',
+                'created_at' => Carbon::now()
             ],
         ];
 

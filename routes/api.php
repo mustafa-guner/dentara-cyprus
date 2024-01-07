@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    return response()->json([
-        'message' => 'Hello World!',
-    ]);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('logout', 'logout');
+        Route::post('me', 'me');
+    });
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    //Resource routes
+    Route::controller(ResourceController::class)->group(function () {
+        Route::get('genders', 'getGenders');
+        Route::post('roles', 'getRoles');
+        Route::get('user-types', 'getUserTypes');
+    });
 });

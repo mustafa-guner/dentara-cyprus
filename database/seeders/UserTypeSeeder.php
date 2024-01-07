@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Constants\User\UserTypeConstants;
 use App\Models\User\UserType;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class UserTypeSeeder extends Seeder
@@ -17,14 +18,17 @@ class UserTypeSeeder extends Seeder
             [
                 'id' => UserTypeConstants::SYSTEM_USER,
                 'definition' => 'System User',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => UserTypeConstants::DOCTOR,
                 'definition' => 'Doctor',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => UserTypeConstants::NURSE,
                 'definition' => 'Nurse',
+                'created_at' => Carbon::now()
             ]
         ];
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Constants\GenderConstants;
 use App\Models\Gender;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class GenderSeeder extends Seeder
@@ -16,19 +17,23 @@ class GenderSeeder extends Seeder
         $genders = [
             [
                 'id' => GenderConstants::MALE,
-                'definition' => 'Male'
+                'definition' => 'Male',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => GenderConstants::FEMALE,
-                'definition' => 'Female'
+                'definition' => 'Female',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => GenderConstants::OTHER,
-                'definition' => 'Other'
+                'definition' => 'Other',
+                'created_at' => Carbon::now()
             ],
             [
                 'id' => GenderConstants::NOT_SPECIFIED,
-                'definition' => 'Not Specified'
+                'definition' => 'Not Specified',
+                'created_at' => Carbon::now()
             ]
         ];
 
