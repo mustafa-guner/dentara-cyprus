@@ -19,7 +19,7 @@ class TreatmentController extends Controller
     public function getTreatments(): JsonResponse
     {
         try {
-            $treatments = Treatment::orderBy('title')->get();
+            $treatments = Treatment::orderBy('created_at','desc')->get();
             return ResponseService::success($treatments, 'Success');
         } catch (Exception $e) {
             Log::info('Treatments are not fetched.Error: ' . $e->getMessage());

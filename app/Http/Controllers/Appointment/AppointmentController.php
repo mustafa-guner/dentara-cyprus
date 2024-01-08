@@ -22,7 +22,7 @@ class AppointmentController extends Controller
     {
         try {
             $appointments = Appointment::orderBy('appointment_date', 'desc')
-                ->with(['assignedUser', 'patient', 'appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy'])
+                ->with(['assignedUser', 'patient', 'appointmentType', 'treatments', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy'])
                 ->get();
             return ResponseService::success($appointments, 'Success');
         } catch (Exception $e) {
@@ -35,7 +35,7 @@ class AppointmentController extends Controller
     {
         try {
             $appointment = Appointment::findOrFail($id)
-                ->load(['assignedUser', 'patient', 'appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
+                ->load(['assignedUser', 'patient', 'appointmentType', 'treatments', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             return ResponseService::success($appointment, 'Success');
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
@@ -62,7 +62,7 @@ class AppointmentController extends Controller
             $appointment = Appointment::create($fields);
             $logs[] = 'Appointment with the ID ' . $appointment->id . ' is created by ' . auth()->user()->id;
 
-            if(isset($fields['treatment_id'])) {
+            if (isset($fields['treatment_id'])) {
                 $this->addTreatmentToAppointment($appointment, $fields, $logs);
             }
 
@@ -72,7 +72,7 @@ class AppointmentController extends Controller
                 Log::info($log);
             }
 
-            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
+            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'treatments', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             return ResponseService::success($appointment, 'Appointment is created successfully.', Response::HTTP_CREATED);
         } catch (ValidationException $e) {
             DB::rollBack();
@@ -94,11 +94,11 @@ class AppointmentController extends Controller
             $fields['updated_by'] = auth()->user()->id;
             $appointment->update($fields);
             $logs[] = 'Appointment with the ID ' . $appointment->id . ' is updated by ' . auth()->user()->id;
-            if(isset($fields['treatment_id'])) {
-                $this->updateAppointmentTreatments($appointment,$fields,$logs);
+            if (isset($fields['treatment_id'])) {
+                $this->updateAppointmentTreatments($appointment, $fields, $logs);
             }
             DB::commit();
-            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
+            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'treatments', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             foreach ($logs as $log) {
                 Log::info($log);
             }
@@ -144,7 +144,7 @@ class AppointmentController extends Controller
         try {
             $appointment = Appointment::findOrFail($id);
             $appointment->calculateTotalPrice();
-            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
+            $appointment->load(['assignedUser', 'patient', 'appointmentType', 'treatments', 'appointmentStatus', 'createdBy', 'updatedBy', 'deletedBy']);
             return ResponseService::success($appointment, 'Appointment price is calculated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
@@ -166,7 +166,7 @@ class AppointmentController extends Controller
         }
     }
 
-    private function updateAppointmentTreatments($appointment,$fields,&$logs):void
+    private function updateAppointmentTreatments($appointment, $fields, &$logs): void
     {
         foreach ($appointment->treatments as $treatment) {
             $treatment->delete();
