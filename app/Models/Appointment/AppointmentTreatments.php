@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $appointment_id
  * @property int $treatment_id
+ * @property int $user_id
  * @property string $created_at
  * @property string|null $updated_at
  */

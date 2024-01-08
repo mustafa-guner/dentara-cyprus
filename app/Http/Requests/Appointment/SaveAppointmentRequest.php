@@ -38,17 +38,17 @@ class SaveAppointmentRequest extends FormRequest
         $appointment_id = $this->route('id');
 
         return [
-            'appointment_date' => 'required|date',
+            'appointment_date' => 'required|date|unique:appointments,appointment_date,' . $appointment_id . ',id,deleted_at,NULL',
             'patient_id' => 'required|exists:patients,id',
             'assigned_user_id' => 'required|exists:users,id',
             'appointment_status_id' => 'required|exists:appointment_statuses,id',
             'payment_method_id' => $appointment_id ? 'required|exists:payment_methods,id' : 'nullable',
             'payment_status_id' => 'required|exists:payment_statuses,id',
             'appointment_type_id' => 'required|exists:appointment_types,id',
-            'discount_id' => $appointment_id ? 'required|exists:discounts,id' : 'nullable',
+            'discount_id' => 'nullable|exists:discounts,id',
             'comment' => 'nullable|string',
-            'price' => 'required|numeric',
-            'real_price' => 'required|numeric',
+            'treatment_id' => 'nullable|string',
+            'treatment_id.*' => 'nullable|exists:treatments,id',
         ];
     }
 
@@ -63,8 +63,8 @@ class SaveAppointmentRequest extends FormRequest
             'payment_status_id.required' => 'The payment status field is required.',
             'appointment_type_id.required' => 'The appointment type field is required.',
             'discount_id.required' => 'The discount field is required.',
-            'price.required' => 'The price field is required.',
-            'real_price.required' => 'The real price field is required.',
+            'appointment_date.date' => 'The appointment date must be a date.',
+            'appointment_date.unique' => 'The appointment date has already been taken.',
         ];
     }
 }

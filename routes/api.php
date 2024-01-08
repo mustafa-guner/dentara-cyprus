@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', 'getAppointments');
             Route::get('/{id}', 'getAppointment');
             Route::post('/create', 'createAppointment');
+            Route::get('/{id}/calculate-price', 'calculatePrice');
             Route::put('update/{id}', 'updateAppointment');
             Route::delete('delete/{id}', 'deleteAppointment');
         });

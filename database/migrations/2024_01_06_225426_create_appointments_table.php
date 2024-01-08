@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('appointment_date');
+            $table->dateTime('appointment_date')->unique();
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('assigned_user_id');
             $table->unsignedBigInteger('appointment_status_id')->default(AppointmentStatusConstants::IN_PROGRESS);
@@ -23,8 +23,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('appointment_type_id');
             $table->unsignedBigInteger('discount_id')->nullable();
             $table->text('comment')->nullable();
-            $table->float('price');
-            $table->float('real_price');
+            $table->decimal('price');
+            $table->decimal('real_price');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

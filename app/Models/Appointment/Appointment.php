@@ -10,6 +10,7 @@ use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -38,10 +39,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property User $user
  * @property Patient $patient
  * @property Discount $discount
+ * @property AppointmentTreatments[] $treatments
+ * @property mixed $calculateTotalPrice
  */
 class Appointment extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'price' => 'float',
+        'real_price' => 'float',
+    ];
 
     protected $fillable = [
         'appointment_date',
@@ -95,6 +103,12 @@ class Appointment extends Model
         return $this->belongsTo(Discount::class, 'discount_id');
     }
 
+    public function treatments(): HasMany
+    {
+        return $this->hasMany(AppointmentTreatments::class, 'appointment_id')->with('treatment');
+    }
+
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -109,4 +123,32 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
+
+    public function calculateTotalPrice(): float|int|string
+    {
+        $appointmentTypePrice = (float)$this->appointmentType->price;
+        $discountAmount = $this->discount ? $this->discount->percentage : 0;
+
+        // Ensure treatment prices are cast to float
+        $treatmentSum = 0;
+
+        $appointmentTreatments = $this->treatments();
+
+        foreach ($appointmentTreatments as $appointmentTreatment) {
+            $treatmentSum += (float)$appointmentTreatment->treatment->price;
+        }
+
+        $discountedPrice = $treatmentSum + $appointmentTypePrice - ($appointmentTypePrice * $discountAmount / 100);
+        $priceWithoutDiscount = $treatmentSum + $appointmentTypePrice;
+
+        $price = $appointmentTypePrice - ($appointmentTypePrice * $discountAmount / 100);
+
+        $this->price = $discountedPrice;
+        $this->real_price = $priceWithoutDiscount;
+        $this->save();
+
+        return $price;
+    }
+
+
 }
