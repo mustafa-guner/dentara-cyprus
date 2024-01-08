@@ -38,6 +38,6 @@ class AppointmentTreatments extends Model
 
     public function treatment(): BelongsTo
     {
-        return $this->belongsTo(Treatment::class, 'treatment_id');
+        return $this->belongsTo(Treatment::class, 'treatment_id')->with(['treatmentType', 'equipment']);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Appointment\Appointment;
 use App\Models\Appointment\AppointmentTreatments;
 use App\Models\Appointment\AppointmentType;
 use App\Services\ResponseService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -62,7 +63,7 @@ class AppointmentController extends Controller
             $appointment = Appointment::create($fields);
             $logs[] = 'Appointment with the ID ' . $appointment->id . ' is created by ' . auth()->user()->id;
 
-            if (isset($fields['treatment_id'])) {
+            if (isset($fields['treatments'])) {
                 $this->addTreatmentToAppointment($appointment, $fields, $logs);
             }
 
@@ -91,10 +92,13 @@ class AppointmentController extends Controller
             $appointment = Appointment::findOrFail($id);
             $fields = $request->validated();
             DB::beginTransaction();
+
             $fields['updated_by'] = auth()->user()->id;
+            $fields['updated_at'] = Carbon::now();
+
             $appointment->update($fields);
             $logs[] = 'Appointment with the ID ' . $appointment->id . ' is updated by ' . auth()->user()->id;
-            if (isset($fields['treatment_id'])) {
+            if (isset($fields['treatments'])) {
                 $this->updateAppointmentTreatments($appointment, $fields, $logs);
             }
             DB::commit();
@@ -155,22 +159,29 @@ class AppointmentController extends Controller
 
     private function addTreatmentToAppointment($appointment, $fields, &$logs): void
     {
-        $treatmentsApplied = $fields['treatment_id'];
-        foreach ($treatmentsApplied as $treatment) {
+        $treatmentsApplied = $fields['treatments'];
+
+        foreach ($treatmentsApplied as $treatmentData) {
+            $treatmentId = $treatmentData['treatment_id'] ?? null;
+            $responsibleUserId = $treatmentData['responsible_user_id'] ?? null;
+
             $appointmentTreatment = AppointmentTreatments::create([
                 'appointment_id' => $appointment->id,
-                'treatment_id' => $treatment,
-                'user_id' => $fields['user_id'], //Responsible from the treatment (nurse,doctor etc)
+                'treatment_id' => $treatmentId,
+                'user_id' => $responsibleUserId, // Responsible for the treatment (nurse, doctor, etc.)
             ]);
+
             $logs[] = 'Appointment treatment with the ID ' . $appointmentTreatment->id . ' is created by ' . auth()->user()->id;
         }
     }
+
 
     private function updateAppointmentTreatments($appointment, $fields, &$logs): void
     {
         foreach ($appointment->treatments as $treatment) {
             $treatment->delete();
         }
+
         $this->addTreatmentToAppointment($appointment, $fields, $logs);
     }
 }

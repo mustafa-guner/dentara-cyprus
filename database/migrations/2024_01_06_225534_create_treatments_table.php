@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('treatment_type_id');
             $table->unsignedBigInteger('equipment_id')->nullable();
-            $table->text('comments')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
 
             $table->foreign('treatment_type_id')->references('id')->on('treatment_types');

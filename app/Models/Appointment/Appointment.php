@@ -105,7 +105,7 @@ class Appointment extends Model
 
     public function treatments(): HasMany
     {
-        return $this->hasMany(AppointmentTreatments::class, 'appointment_id')->with('treatment');
+        return $this->hasMany(AppointmentTreatments::class, 'appointment_id')->with(['treatment','user']);
     }
 
 

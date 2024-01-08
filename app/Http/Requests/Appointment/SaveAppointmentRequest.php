@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $comment
  * @property integer $price
  * @property integer $real_price
+ * @property array $treatments
  */
 class SaveAppointmentRequest extends FormRequest
 {
@@ -47,8 +48,11 @@ class SaveAppointmentRequest extends FormRequest
             'appointment_type_id' => 'required|exists:appointment_types,id',
             'discount_id' => 'nullable|exists:discounts,id',
             'comment' => 'nullable|string',
-            'treatment_id' => 'nullable|string',
-            'treatment_id.*' => 'nullable|exists:treatments,id',
+
+            //Optional fields for appointment treatments on end of the appointment
+            'treatments' => 'nullable|array',
+            'treatments.*.treatment_id' => 'nullable|exists:treatments,id',
+            'treatments.*.responsible_user_id' => 'nullable|exists:users,id'
         ];
     }
 
@@ -65,6 +69,17 @@ class SaveAppointmentRequest extends FormRequest
             'discount_id.required' => 'The discount field is required.',
             'appointment_date.date' => 'The appointment date must be a date.',
             'appointment_date.unique' => 'The appointment date has already been taken.',
+            'patient_id.exists' => 'Please enter a valid patient.',
+            'assigned_user_id.exists' => 'Please enter a valid assigned user.',
+            'appointment_status_id.exists' => 'Please enter a valid appointment status.',
+            'payment_method_id.exists' => 'Please enter a valid payment method.',
+            'payment_status_id.exists' => 'Please enter a valid payment status.',
+            'appointment_type_id.exists' => 'Please enter a valid appointment type.',
+            'discount_id.exists' => 'Please enter a valid discount.',
+            'comment.string' => 'The comment must be a string.',
+            'treatments.array' => 'The treatments must be an array.',
+            'treatments.*.treatment_id.exists' => 'Please enter a valid treatment.',
+            'treatments.*.responsible_user_id.exists' => 'Please enter a valid responsible user.',
         ];
     }
 }
