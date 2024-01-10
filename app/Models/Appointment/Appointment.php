@@ -107,8 +107,7 @@ class Appointment extends Model
     {
         return $this->hasMany(AppointmentTreatments::class, 'appointment_id')->with(['treatment','user']);
     }
-
-
+    
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -129,7 +128,6 @@ class Appointment extends Model
         $appointmentTypePrice = (float)$this->appointmentType->price;
         $discountAmount = $this->discount ? $this->discount->percentage : 0;
 
-        // Ensure treatment prices are cast to float
         $treatmentSum = 0;
 
         $appointmentTreatments = $this->treatments();
