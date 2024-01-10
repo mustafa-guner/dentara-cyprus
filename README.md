@@ -180,6 +180,7 @@ Appointment Treatments, as an intermediary table, includes fields for appointmen
 The Treatment and Treatment Type entities provide additional details, such as equipment, comments, and pricing, contributing to a comprehensive record of patient care. In summary, the described system aims to streamline appointment management, enhance user-specific functionalities, and maintain a detailed record of treatments and appointments for efficient healthcare administration.
 
 
-![image](https://github.com/mustafa-guner/dentara-cyprus/assets/60453650/7fd45949-f020-4f1a-a708-a6d5c34cd4af)
+
+![image](https://github.com/mustafa-guner/dentara-cyprus/assets/60453650/33cf8423-9bf8-4b28-99ed-fe87bc3e9165)
 
 
