@@ -28,6 +28,7 @@ class SaveAppointmentTypeRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'description' => 'nullable|string|max:300',
+            'price' => 'required|numeric',
         ];
     }
 
