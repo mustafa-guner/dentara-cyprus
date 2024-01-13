@@ -100,24 +100,26 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => '/appointments'], function () {
         Route::controller(AppointmentController::class)->group(function () {
             Route::get('/', 'getAppointments');
-            Route::get('/{id}', 'getAppointment');
+            Route::get('/appointment/{id}', 'getAppointment');
             Route::post('/create', 'createAppointment');
             Route::get('/{id}/calculate-price', 'calculatePrice');
             Route::put('update/{id}', 'updateAppointment');
             Route::delete('delete/{id}', 'deleteAppointment');
         });
 
-        /**
-         * @URL: {{URL}}/api/v1/appointments/types/*
-         */
-        Route::group(['prefix' => '/types'], function () {
-            Route::controller(AppointmentTypeController::class)->group(function () {
-                Route::get('/', 'getAppointmentTypes');
-                Route::get('/{id}', 'getAppointmentType');
-                Route::post('/create', 'createAppointmentType');
-                Route::put('/update/{id}', 'updateAppointmentType');
-                Route::delete('delete/{id}', 'deleteAppointmentType');
-            });
+
+    });
+
+    /**
+     * @URL: {{URL}}/api/v1/appointments/types*
+     */
+    Route::group(['prefix' => 'appointment/types'], function () {
+        Route::controller(AppointmentTypeController::class)->group(function () {
+            Route::get('/', 'getAppointmentTypes');
+            Route::get('/type/{id}', 'getAppointmentType');
+            Route::post('/create', 'createAppointmentType');
+            Route::put('/update/{id}', 'updateAppointmentType');
+            Route::delete('delete/{id}', 'deleteAppointmentType');
         });
     });
 
@@ -131,7 +133,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => '/treatments'], function () {
         Route::controller(TreatmentController::class)->group(function () {
             Route::get('/', 'getTreatments');
-            Route::get('/{id}', 'getTreatment');
+            Route::get('/treatment/{id}', 'getTreatment');
             Route::post('/create', 'createTreatment');
             Route::put('/update/{id}', 'updateTreatment');
             Route::delete('delete/{id}', 'deleteTreatment');
@@ -143,7 +145,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => '/types'], function () {
             Route::controller(TreatmentTypeController::class)->group(function () {
                 Route::get('/', 'getTreatmentTypes');
-                Route::get('/{id}', 'getTreatmentType');
+                Route::get('/type/{id}', 'getTreatmentType');
                 Route::post('/create', 'createTreatmentType');
                 Route::put('/update/{id}', 'updateTreatmentType');
                 Route::delete('delete/{id}', 'deleteTreatmentType');

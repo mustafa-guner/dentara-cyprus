@@ -32,8 +32,15 @@ class AuthController extends Controller
 
             $token = $user->createToken('access-token', [], Carbon::tomorrow())->plainTextToken;
 
+            //Hard Coded Abilities @TODO:this needs tobe functional
+            $abilities = $this->getAbilities();
+
+            $abilities = $abilities[$user->role->name];
+
+
             return ResponseService::success([
                 'token' => $token,
+                'abilities' => $abilities
             ], 'Login successful', Response::HTTP_OK);
 
         } catch (ModelNotFoundException $e) {
@@ -66,5 +73,53 @@ class AuthController extends Controller
             Log::error('User is not logged out.Error: ' . $e->getMessage());
             return ResponseService::fail('Something went wrong while logging out. Please try again.', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private function getAbilities()
+    {
+
+        $crud = [
+            'create' => true,
+            'read' => true,
+            'delete' => true,
+            'update' => true,
+        ];
+
+        $r = [
+            'create' => false,
+            'read' => true,
+            'delete' => false,
+            'update' => false
+        ];
+
+        $cru = [
+            'create' => true,
+            'read' => true,
+            'update' => true,
+            'delete' => false
+        ];
+
+        return [
+            'Admin' => [
+                'users' => $crud,
+                'appointments' => $crud,
+                'treatments' => $crud,
+                'patients' => $crud,
+                'equipments' => $crud,
+                'appointmentTypes' => $crud,
+                'treatmentTypes' => $crud,
+                'appointmentTreatments' => $crud
+            ],
+            'User' => [
+                'users' => $r,
+                'appointments' => $cru,
+                'treatments' => $cru,
+                'patients' => $cru,
+                'equipments' => $cru,
+                'appointmentTypes' => $cru,
+                'treatmentTypes' => $cru,
+                'appointmentTreatments' => $cru
+            ]
+        ];
     }
 }

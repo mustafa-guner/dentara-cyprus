@@ -40,7 +40,7 @@ class AppointmentController extends Controller
             return ResponseService::success($appointment, 'Success');
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
-            Log::info('Appointment is not deleted.Error: ' . $e->getMessage());
+            Log::info('Appointment is not found.Error: ' . $e->getMessage());
             return ResponseService::fail('Appointment is not found.', Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::info('Appointment is not fetched.Error: ' . $e->getMessage());
