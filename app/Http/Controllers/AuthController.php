@@ -35,7 +35,7 @@ class AuthController extends Controller
             //Hard Coded Abilities @TODO:this needs tobe functional
             $abilities = $this->getAbilities();
 
-            $abilities = $abilities[$user->role->name];
+            $abilities = $abilities[$user->role->definition];
 
 
             return ResponseService::success([
