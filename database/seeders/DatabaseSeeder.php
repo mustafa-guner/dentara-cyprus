@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             TreatmentTypeSeeder::class,
             DiscountSeeder::class,
             UserSeeder::class,
+            PatientSeeder::class,
         ]);
     }
 }
