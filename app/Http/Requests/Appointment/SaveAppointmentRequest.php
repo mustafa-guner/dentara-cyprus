@@ -39,13 +39,13 @@ class SaveAppointmentRequest extends FormRequest
         $appointment_id = $this->route('id');
 
         return [
-            'appointment_date' => 'required|date|unique:appointments,appointment_date,' . $appointment_id . ',id,deleted_at,NULL',
-            'patient_id' => 'required|exists:patients,id',
-            'assigned_user_id' => 'required|exists:users,id',
-            'appointment_status_id' => 'required|exists:appointment_statuses,id',
-            'payment_method_id' => $appointment_id ? 'required|exists:payment_methods,id' : 'nullable',
-            'payment_status_id' => 'required|exists:payment_statuses,id',
-            'appointment_type_id' => 'required|exists:appointment_types,id',
+            'appointment_date' => $appointment_id ? 'sometimes' : 'required' . '|date|unique:appointments,appointment_date,' . $appointment_id . ',id,deleted_at,NULL',
+            'patient_id' => $appointment_id ? 'nullable' : 'required' . '|exists:patients,id',
+            'assigned_user_id' => $appointment_id ? 'nullable' : 'required' . '|exists:users,id',
+            'appointment_status_id' => $appointment_id ? 'nullable' : 'required' . '|exists:appointment_statuses,id',
+            'payment_method_id' => $appointment_id ? 'nullable' : 'required' . '|exists:payment_methods,id',
+            'payment_status_id' => $appointment_id ? 'nullable' : 'required' . '|exists:payment_statuses,id',
+            'appointment_type_id' => $appointment_id ? 'nullable' : 'required' . '|exists:appointment_types,id',
             'discount_id' => 'nullable|exists:discounts,id',
             'comment' => 'nullable|string',
 
