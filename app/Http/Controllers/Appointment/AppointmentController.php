@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Appointment;
 
+use App\Constants\Payment\PaymentStatusConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Appointment\SaveAppointmentRequest;
 use App\Models\Appointment\Appointment;
@@ -59,6 +60,7 @@ class AppointmentController extends Controller
             $appointmentType = AppointmentType::findOrFail($fields['appointment_type_id']);
             $fields['price'] = $appointmentType->price;
             $fields['real_price'] = $appointmentType->price;
+            $fields['payment_status_id'] = PaymentStatusConstants::PENDING;
 
             $appointment = Appointment::create($fields);
             $logs[] = 'Appointment with the ID ' . $appointment->id . ' is created by ' . auth()->user()->id;
